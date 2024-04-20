@@ -2,7 +2,6 @@
 #include "../ecs/entity.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
 
 namespace our {
     // Reads camera parameters from the given json object
@@ -37,7 +36,6 @@ namespace our {
         // - the up direction which is the vector (0,1,0) but after being transformed by M
         // then you can use glm::lookAt
 
-        std::cout << "\n\n\n\n\n\nA7A2\n\n\n\n\n\n\n";
         glm::vec4 eye = M * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         glm::vec4 center = M * glm::vec4(0.0f, 0.0f, -1.0f, 1.0f);
         glm::vec4 up = M * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
@@ -56,15 +54,16 @@ namespace our {
         // Left and Right are the same but after being multiplied by the aspect ratio
         // For the perspective camera, you can use glm::perspective
 
-        std::cout << "\n\n\n\n\n\nA7A2\n\n\n\n\n\n\n";
         float aspectRatio = static_cast<float>(viewportSize.x) / viewportSize.y;
-        float orthoHeight = 1.0f;
-        float left = -orthoHeight * aspectRatio * 0.5f;
-        float right = orthoHeight * aspectRatio * 0.5f;
-        float bottom = -orthoHeight * 0.5f;
-        float top = orthoHeight * 0.5f;
-        float nearPlane = 0.1f;
-        float farPlane = 100.0f;
-        return glm::ortho(left, right, bottom, top, nearPlane, farPlane);
+        if (cameraType == CameraType::ORTHOGRAPHIC) {
+            float left = -orthoHeight * aspectRatio * 0.5f;
+            float right = orthoHeight * aspectRatio * 0.5f;
+            float bottom = -orthoHeight * 0.5f;
+            float top = orthoHeight * 0.5f;
+            return glm::ortho(left, right, bottom, top, near, far);
+        }
+        else {
+            return glm::perspective(fovY, aspectRatio, near, far);
+        }
     }
 }
