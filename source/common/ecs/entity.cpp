@@ -8,11 +8,18 @@ namespace our {
 
     // This function returns the transformation matrix from the entity's local space to the world space
     // Remember that you can get the transformation matrix from this entity to its parent from "localTransform"
-    // To get the local to world matrix, you need to combine this entities matrix with its parent's matrix and
+    // To get the local to world matrix, you need to combine this entity's matrix with its parent's matrix and
     // its parent's parent's matrix and so on till you reach the root.
     glm::mat4 Entity::getLocalToWorldMatrix() const {
-        //TODO: (Req 8) Write this function
-        return glm::mat4(1.0f);
+        //TODO (DONE): (Req 8) Write this function
+        glm::mat4 localToWorld = glm::mat4(1.0f);
+        const Entity* currentEntity = this;
+        while (currentEntity != nullptr) {
+            glm::mat4 currentTransform = currentEntity->localTransform.toMat4();
+            localToWorld = currentTransform * localToWorld;
+            currentEntity = currentEntity->parent;
+        }
+        return localToWorld;
     }
 
     // Deserializes the entity data and components from a json object
