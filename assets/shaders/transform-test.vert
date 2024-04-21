@@ -15,7 +15,7 @@ out Varyings {
 uniform mat4 transform;
 
 void main(){
-    //TODO: (Req 3) Change the next line to apply the transformation matrix
+    //TODO (DONE): (Req 3) Change the next line to apply the transformation matrix
 
     gl_Position = transform * vec4(position, 1.0);
 
