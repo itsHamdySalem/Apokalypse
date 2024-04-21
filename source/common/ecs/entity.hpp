@@ -102,6 +102,7 @@ namespace our {
                 if (*it == component) {
                     delete *it;
                     components.erase(it);
+                    return;
                 }
             }
         }
