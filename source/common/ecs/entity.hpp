@@ -75,9 +75,8 @@ namespace our {
             for (auto it = components.begin(); it != components.end(); ++it) {
                 T* del = dynamic_cast<T*>(*it);
                 if (del) {
-                    auto d = *it;
+                    delete *it;
                     components.erase(it);
-                    delete d;
                     return;
                 }
             }
@@ -101,10 +100,8 @@ namespace our {
             // If found, delete the found component and remove it from the components list
             for (auto it = components.begin(); it != components.end(); ++it) {
                 if (*it == component) {
-                    auto del = *it;
+                    delete *it;
                     components.erase(it);
-                    delete del;
-                    return;
                 }
             }
         }
@@ -112,9 +109,8 @@ namespace our {
         // Since the entity owns its components, they should be deleted alongside the entity
         ~Entity(){
             //TODO (DONE): (Req 8) Delete all the components in "components".
-            for (auto it = components.begin(); it != components.end(); ) {
-                auto del = *it; it++;
-                delete del;
+            for (auto it = components.begin(); it != components.end(); ++it) {
+                delete *it;
             }
             components.clear();
         }
