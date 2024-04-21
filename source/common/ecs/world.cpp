@@ -9,7 +9,7 @@ namespace our {
         if(!data.is_array()) return;
         for(const auto& entityData : data){
             //TODO (DONE): (Req 8) Create an entity, make its parent "parent" and call its deserialize with "entityData".
-            Entity* en = new Entity();
+            Entity* en = add();
             en->parent = parent;
             en->deserialize(entityData);
 

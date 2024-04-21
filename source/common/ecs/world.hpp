@@ -51,10 +51,8 @@ namespace our {
         void deleteMarkedEntities(){
             //TODO (DONE): (Req 8) Remove and delete all the entities that have been marked for removal
             for (auto &en : markedForRemoval) {
-                if (entities.count(en)) {
-                    entities.erase(en);
-                    delete en;
-                }
+                entities.erase(en);
+                delete en;
             }
             markedForRemoval.clear();
         }

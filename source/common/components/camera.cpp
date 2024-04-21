@@ -60,7 +60,7 @@ namespace our {
             float right = orthoHeight * aspectRatio * 0.5f;
             float bottom = -orthoHeight * 0.5f;
             float top = orthoHeight * 0.5f;
-            return glm::ortho(left, right, bottom, top, near, far);
+            return glm::ortho(left, right, bottom, top);
         }
         else {
             return glm::perspective(fovY, aspectRatio, near, far);
