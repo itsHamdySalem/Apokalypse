@@ -10,10 +10,7 @@ namespace our {
         //TODO (DONE): (Req 7) Write this function
 
         pipelineState.setup();
-
-        if (shader) {
-            shader->use();
-        }
+        shader->use();
     }
 
     // This function read the material data from a json object
@@ -33,10 +30,7 @@ namespace our {
         //TODO (DONE): (Req 7) Write this function
 
         Material::setup();
-
-        if (shader) {
-            shader->set("tint", tint);
-        }
+        shader->set("tint", tint);
     }
 
     // This function read the material data from a json object
@@ -52,13 +46,15 @@ namespace our {
     void TexturedMaterial::setup() const {
         //TODO (DONE): (Req 7) Write this function
         TintedMaterial::setup();
-
-        if (shader) {
-            shader->set("alphaThreshold", alphaThreshold);
-            texture->bind();
-            sampler->bind(0);
-            shader->set("tex", 0);
-        }
+        
+        shader->set("alphaThreshold", alphaThreshold);
+        
+        glActiveTexture(GL_TEXTURE0);
+        
+        texture->bind();
+        sampler->bind(0);
+        
+        shader->set("tex", 0);
     }
 
     // This function read the material data from a json object

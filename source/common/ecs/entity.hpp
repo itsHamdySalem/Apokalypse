@@ -87,9 +87,8 @@ namespace our {
             auto it = components.begin();
             std::advance(it, index);
             if(it != components.end()) {
-                auto del = *it;
+                delete *it;
                 components.erase(it);
-                delete del;
             }
         }
 

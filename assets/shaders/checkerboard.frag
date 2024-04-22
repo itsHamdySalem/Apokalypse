@@ -16,8 +16,8 @@ void main(){
     int x = int(gl_FragCoord.x);
     int y = int(gl_FragCoord.y);
 
-    (x % (2 * size) < size) ? (y % (2 * size) < size) ? frag_color = vec4(colors[0], 1.0) : frag_color = vec4(colors[1], 1.0) :
-        (y % (2 * size) >= size) ? frag_color = vec4(colors[0], 1.0) :
-            frag_color = vec4(colors[1], 1.0);
+    bool tileX = (x % (2 * size) < size);
+    bool tileY = (y % (2 * size) < size);
 
+    tileX == tileY ?  frag_color = vec4(colors[0], 1.0) : frag_color = vec4(colors[1], 1.0);
 }
