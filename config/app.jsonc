@@ -164,24 +164,25 @@
                         "specular": [0, 0, 1],
                         "attenuation": [0.001, 0.001, 0.0001]
                     }
+                ],
+                "children": [
+                    {
+                        "position": [1, -1, -1],
+                        "rotation": [45, 45, 0],
+                        "scale": [0.1, 0.1, 1.0],
+                        "components": [
+                            {
+                                "type": "Mesh Renderer",
+                                "mesh": "cube",
+                                "material": "metal"
+                            }
+                        ]
+                    }
                 ]
-                // "children": [
-                //     {
-                //         "position": [1, -1, -1],
-                //         "rotation": [45, 45, 0],
-                //         "scale": [0.1, 0.1, 1.0],
-                //         "components": [
-                //             {
-                //                 "type": "Mesh Renderer",
-                //                 "mesh": "cube",
-                //                 "material": "metal"
-                //             }
-                //         ]
-                //     }
-                // ]
             },
             {
                 "rotation": [-45, 0, 0],
+                "scale": [3, 3, 3],
                 "components": [
                     {
                         "type": "Mesh Renderer",
