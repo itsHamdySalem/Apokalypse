@@ -125,6 +125,7 @@ namespace our
         }
 
         // Reset the active texture to texture unit 0
+        glActiveTexture(GL_TEXTURE0);
     }
 
     void LitMaterial::deserialize(const nlohmann::json &data)
