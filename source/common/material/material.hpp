@@ -57,7 +57,7 @@ namespace our
         void deserialize(const nlohmann::json &data) override;
     };
 
-    class LitMaterial : public TexturedMaterial
+    class LitMaterial : public Material
     {
     public:
         Texture2D *albedo;

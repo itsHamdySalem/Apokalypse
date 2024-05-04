@@ -138,6 +138,24 @@
                     "tint": [1, 1, 1, 1],
                     "texture": "moon",
                     "sampler": "default"
+                },
+                "light": {
+                    "type": "lighted",
+                    "shader": "lighted",
+                    "pipelineState": {
+                        "faceCulling": {
+                            "enabled": false
+                        },
+                        "depthTesting": {
+                            "enabled": true
+                        }
+                    },
+                    "albedo": "moon",
+                    "specular": "grass",
+                    "roughness": "wood",
+                    "ambient_occlusion": "glass",
+                    "emissive": "monkey",
+                    "sampler": "default"
                 }
             }
         },
@@ -187,7 +205,7 @@
                     {
                         "type": "Mesh Renderer",
                         "mesh": "monkey",
-                        "material": "monkey"
+                        "material": "light"
                     },
                     {
                         "type": "Movement",

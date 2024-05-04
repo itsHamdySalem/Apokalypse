@@ -16,13 +16,13 @@ namespace our
             {
                 lightType = static_cast<int>(LightType::DIRECTIONAL);
             }
-            else if (lightTypeStr == "SPOT")
-            {
-                lightType = static_cast<int>(LightType::SPOT);
-            }
             else if (lightTypeStr == "POINT")
             {
                 lightType = static_cast<int>(LightType::POINT);
+            }
+            else if (lightTypeStr == "SPOT")
+            {
+                lightType = static_cast<int>(LightType::SPOT);
             }
 
             // get the direction of the light (default value: (1, 1, 1))

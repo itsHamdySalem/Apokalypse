@@ -1,19 +1,18 @@
 #version 330
 
-#define MAX_LIGHTS 16
+#define MAX_LIGHTS 8
 
 // Light types
 #define DIRECTIONAL 0
-#define SPOT 1
-#define POINT 2
+#define POINT 1
+#define SPOT 2
 
 // Struct to represent a light
 struct Light {
     int type;
+    vec3 color;
     vec3 position;
     vec3 direction;
-    vec3 diffuse;
-    vec3 specular;
     vec3 attenuation;
     vec2 cone_angles;
 };
@@ -32,10 +31,10 @@ uniform Sky sky;
 // Struct to represent the material
 struct Material {
     sampler2D albedo;
-    sampler2D specular;
-    sampler2D ambient_occlusion;
-    sampler2D roughness;
     sampler2D emissive;
+    sampler2D specular;
+    sampler2D roughness;
+    sampler2D ambient_occlusion;
 };
 
 uniform Material material;
@@ -79,14 +78,16 @@ void main() {
         Light light = lights[i];
         vec3 direction_to_light = (light.type == DIRECTIONAL) ? -light.direction : normalize(light.position - fs_in.world);
         
-        vec3 diffuse = light.diffuse * material_diffuse * max(0, dot(normal, direction_to_light));
+        vec3 diffuse = light.color * material_diffuse * max(0, dot(normal, direction_to_light));
         vec3 reflected = reflect(-direction_to_light, normal);
-        vec3 specular = light.specular * material_specular * pow(max(0, dot(view, reflected)), material_shininess);
+        vec3 specular = light.color * material_specular * pow(max(0, dot(view, reflected)), material_shininess);
 
         float attenuation = 1.0;
         if (light.type != DIRECTIONAL) {
-            float distance_to_light = distance(light.position, fs_in.world);
-            attenuation = 1.0 / dot(light.attenuation, vec3(distance_to_light * distance_to_light, distance_to_light, 1.0));
+            if (light.type == POINT) {
+                float distance_to_light = distance(light.position, fs_in.world);
+                attenuation = 1.0 / (1.0 + light.attenuation.x * distance_to_light + light.attenuation.y * distance_to_light * distance_to_light);
+            }
             
             if (light.type == SPOT) {
                 float angle = acos(dot(-direction_to_light, light.direction));

@@ -81,48 +81,48 @@ namespace our
     void LitMaterial::setup() const
     {
         // Call the setup function of the base class
-        TexturedMaterial::setup();
+        Material::setup();
 
         // Bind and set the texture uniforms for each texture if they exist
-        if (albedo)
+        glActiveTexture(GL_TEXTURE0);
+        if (albedo && sampler)
         {
-            glActiveTexture(GL_TEXTURE0);
             albedo->bind();
             sampler->bind(0);
-            shader->set("material.albedo", 0);
         }
+        shader->set("material.albedo", 0);
 
-        if (specular)
+        glActiveTexture(GL_TEXTURE1);
+        if (specular && sampler)
         {
-            glActiveTexture(GL_TEXTURE1);
             specular->bind();
             sampler->bind(1);
-            shader->set("material.specular", 1);
         }
+        shader->set("material.specular", 1);
 
-        if (ambient_occlusion)
+        glActiveTexture(GL_TEXTURE2);
+        if (ambient_occlusion && sampler)
         {
-            glActiveTexture(GL_TEXTURE2);
             ambient_occlusion->bind();
             sampler->bind(2);
-            shader->set("material.ambient_occlusion", 2);
         }
+        shader->set("material.ambient_occlusion", 2);
 
-        if (roughness)
+        glActiveTexture(GL_TEXTURE3);
+        if (roughness && sampler)
         {
-            glActiveTexture(GL_TEXTURE3);
             roughness->bind();
             sampler->bind(3);
-            shader->set("material.roughness", 3);
         }
+        shader->set("material.roughness", 3);
 
-        if (emissive)
+        glActiveTexture(GL_TEXTURE4);
+        if (emissive && sampler)
         {
-            glActiveTexture(GL_TEXTURE4);
             emissive->bind();
             sampler->bind(4);
-            shader->set("material.emissive", 4);
         }
+        shader->set("material.emissive", 4);
 
         // Reset the active texture to texture unit 0
         glActiveTexture(GL_TEXTURE0);
@@ -130,7 +130,7 @@ namespace our
 
     void LitMaterial::deserialize(const nlohmann::json &data)
     {
-        TexturedMaterial::deserialize(data);
+        Material::deserialize(data);
 
         if (!data.is_object())
         {
@@ -162,7 +162,9 @@ namespace our
             emissive = AssetLoader<Texture2D>::get(data.value("emissive", ""));
         }
 
-        sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
+        if (data.contains("sampler")) {
+            sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
+        }
     }
 
 }
