@@ -30,7 +30,7 @@
                 }
             },
             "textures":{
-                "moon": "assets/textures/moon.jpg",
+                "moon": "assets/textures/earth.jpeg",
                 "grass": "assets/textures/grass_ground_d.jpg",
                 "wood": "assets/textures/wood.jpg",
                 "glass": "assets/textures/glass-panels.png",
@@ -42,14 +42,16 @@
                 "ambient_occlusion": "assets/textures/ambient_occlusion.jpg",
                 "emissive": "assets/textures/emissive.jpg",
                 "roughness": "assets/textures/roughness.jpg",
-                "albedo": "assets/textures/albedo.jpg"
+                "albedo": "assets/textures/albedo.jpg",
+                "heart": "assets/textures/heart.png"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
                 "monkey": "assets/models/monkey.obj",
                 "plane": "assets/models/plane.obj",
                 "sphere": "assets/models/sphere.obj",
-                "rocket": "assets/models/rocket.obj"
+                "rocket": "assets/models/rocket.obj",
+                "laser": "assets/models/laser.obj"
             },
             "samplers":{
                 "default":{},
@@ -174,6 +176,21 @@
                         "tint": [1, 1, 1, 1],
                         "texture": "rocket",
                         "sampler": "default"
+                },
+                "laser": {
+                    "type": "textured",
+                    "shader": "textured",
+                    "pipelineState": {
+                      "faceCulling": {
+                        "enabled": false
+                      },
+                      "depthTesting": {
+                        "enabled": true
+                      }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "heart",
+                    "sampler": "default"
                 }
             }
         },
@@ -218,6 +235,22 @@
                           }
                         ]
                     }
+                    // {
+                    //     "rotation": [0, 0, 0],
+                    //     "position": [0, -0.5, 0],
+                    //     "scale": [1, 1, 900.0],
+                    //     "components": [
+                    //       {
+                    //         "type": "Mesh Renderer",
+                    //         "mesh": "laser",
+                    //         "material": "laser"
+                    //       },
+                    //       {
+                    //         "type": "Collision",
+                    //         "mesh": "rocket"
+                    //       }
+                    //     ]
+                    // }
                     // {
                     //     "position": [1, -1, -1],
                     //     "rotation": [45, 45, 0],
@@ -322,23 +355,23 @@
             //         }
             //     ]
             // }
-            // {
-            //     "position": [0, 10, 0],
-            //     "rotation": [45, 45, 0],
-            //     "scale": [5, 5, 5],
-            //     "components": [
-            //         {
-            //             "type": "Mesh Renderer",
-            //             "mesh": "sphere",
-            //             "material": "moon"
-            //         },
-            //         {
-            //             "type": "Movement",
-            //             "angularVelocity": [0, 90, 0]
-            //             // "linearVelocity": [0, 0.1, 0.4]
-            //         }
-            //     ]
-            // }
+            ,{
+                "position": [0, 0, -30],
+                "rotation": [45, 45, 0],
+                "scale": [15, 15, 15],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "moon"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                        // "linearVelocity": [0, 0.1, 0.4]
+                    }
+                ]
+            }
         ]
     }
 }

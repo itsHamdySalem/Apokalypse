@@ -24,11 +24,11 @@ namespace our {
                     int x = i%4;
                     newEntity->deserialize({{"name", "monkey"},
                                             {"rotation", {0, 0, 0}},
-                                            {"position", {((1 + i / 2) ^ 2) % 10, 0, -15 - i * 5}},
+                                            {"position", {((1 + i / 2) ^ 2) % 10, 0, -100 - i * 5}},
                                             {"scale", {0.4, 0.4, 0.4}},
                                             {"components",
                                             {{{"type", "Mesh Renderer"}, {"mesh", "monkey"}, {"material", "monkey"}},
-                                            {{"type", "Movement"}, {"angularVelocity", {0, 100, 0}}, {"linearVelocity", {0, 0, 1.6}}}}}});
+                                            {{"type", "Movement"}, {"angularVelocity", {0, 100, 0}}, {"linearVelocity", {0, 0, 0.6}}}}}});
                 }
             }
             // data is map of maps
