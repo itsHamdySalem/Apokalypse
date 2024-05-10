@@ -17,7 +17,7 @@ namespace our {
 
             if (entity->name == "monkey")
             {
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 1000; i++)
                 {
                     Entity *newEntity = add();
                     newEntity->parent = parent;
@@ -28,7 +28,7 @@ namespace our {
                                             {"scale", {0.4, 0.4, 0.4}},
                                             {"components",
                                             {{{"type", "Mesh Renderer"}, {"mesh", "monkey"}, {"material", "monkey"}},
-                                            {{"type", "Movement"}, {"angularVelocity", {0, 100, 0}}, {"linearVelocity", {0, 0, 0.6}}}}}});
+                                            {{"type", "Movement"}, {"angularVelocity", {0, 100, 0}}, {"linearVelocity", {0, 0, 1.6}}}}}});
                 }
             }
             // data is map of maps
