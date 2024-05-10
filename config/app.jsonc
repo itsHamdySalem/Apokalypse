@@ -23,6 +23,10 @@
                 "textured":{
                     "vs":"assets/shaders/textured.vert",
                     "fs":"assets/shaders/textured.frag"
+                },
+                "lighted":{
+                    "vs":"assets/shaders/lighted.vert",
+                    "fs":"assets/shaders/lighted.frag"
                 }
             },
             "textures":{
@@ -31,7 +35,14 @@
                 "wood": "assets/textures/wood.jpg",
                 "glass": "assets/textures/glass-panels.png",
                 "monkey": "assets/textures/monkey.png",
-                "rocket": "assets/textures/rocket.jpg"
+                "rocket": "assets/textures/rocket.jpg",
+                "white": "assets/textures/white.jpg",
+                "black": "assets/textures/black.jpg",
+                "specular": "assets/textures/specular.jpg",
+                "ambient_occlusion": "assets/textures/ambient_occlusion.jpg",
+                "emissive": "assets/textures/emissive.jpg",
+                "roughness": "assets/textures/roughness.jpg",
+                "albedo": "assets/textures/albedo.jpg"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
@@ -98,8 +109,8 @@
                     "sampler": "default"
                 },
                 "monkey":{
-                    "type": "textured",
-                    "shader": "textured",
+                    "type": "lighted",
+                    "shader": "lighted",
                     "pipelineState": {
                         "faceCulling":{
                             "enabled": false
@@ -109,8 +120,11 @@
                         }
                     },
                     "tint": [1, 1, 1, 1],
-                    "texture": "monkey",
-                    "sampler": "default"
+                    "sampler": "default",
+                    "albedo": "monkey",
+                    "roughness": "roughness",
+                    "specular": "white",
+                    "ambient_occlusion": "black"
                 },
                 "moon":{
                     "type": "textured",
@@ -127,6 +141,24 @@
                     "texture": "moon",
                     "sampler": "default"
                 },
+                "light": {
+                    "type": "lighted",
+                    "shader": "lighted",
+                    "pipelineState": {
+                        "faceCulling": {
+                            "enabled": false
+                        },
+                        "depthTesting": {
+                            "enabled": true
+                        }
+                    },
+                    "albedo": "moon",
+                    "specular": "grass",
+                    "roughness": "wood",
+                    "ambient_occlusion": "glass",
+                    "emissive": "monkey",
+                    "sampler": "default"
+                },
                 "rocket": {
                     "type": "textured",
                     "shader": "textured",
@@ -136,6 +168,7 @@
                         },
                         "depthTesting": {
                             "enabled": true
+
                           }
                     },
                         "tint": [1, 1, 1, 1],
@@ -153,6 +186,19 @@
                     },
                     {
                         "type": "Free Camera Controller"
+                    },
+                    {
+                        "type": "light",
+                        "typeOfLight": "DIRECTIONAL",
+                        "diffuse": [0, 1, 0],
+                        "specular": [0, 1, 0]
+                    },
+                    {
+                        "type": "light",
+                        "typeOfLight": "POINT",
+                        "diffuse": [0, 0, 1],
+                        "specular": [0, 0, 1],
+                        "attenuation": [0.001, 0.001, 0.0001]
                     }
                 ],
                 "children": [
@@ -195,7 +241,7 @@
                     {
                         "type": "Mesh Renderer",
                         "mesh": "monkey",
-                        "material": "monkey"
+                        "material": "light"
                     },
                     {
                         "type": "Movement",
