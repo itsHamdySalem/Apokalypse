@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/gl.h>
+#include <algorithm>
 #include "vertex.hpp"
 
 namespace our {
@@ -19,6 +20,9 @@ namespace our {
         GLsizei elementCount;
 
     public:
+        // Minimum and maximum coordinates of the bounding box
+        glm::vec3 minVert = {100.0f, 100.0f, 100.0f};
+        glm::vec3 maxVert = {-1.0f, -1.0f, -1.0f};
 
         // The constructor takes two vectors:
         // - vertices which contain the vertex data.
@@ -59,6 +63,18 @@ namespace our {
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * elementCount, &elements[0], GL_STATIC_DRAW);
 
             glBindVertexArray(0);
+
+            // Find minimum and maximum vertices
+            for (auto& vertex: vertices)
+            {
+                minVert.x = std::min(minVert.x, vertex.position.x);
+                minVert.y = std::min(minVert.y, vertex.position.y);
+                minVert.z = std::min(minVert.z, vertex.position.z);
+                
+                maxVert.y = std::max(maxVert.y, vertex.position.y);
+                maxVert.x = std::max(maxVert.x, vertex.position.x);
+                maxVert.z = std::max(maxVert.z, vertex.position.z);
+            }
         }
 
         // this function should render the mesh
@@ -68,6 +84,7 @@ namespace our {
 
             glBindVertexArray(VAO);
             glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, (void*)0);
+            glBindVertexArray(0);
         }
 
         // this function should delete the vertex & element buffers and the vertex array object
