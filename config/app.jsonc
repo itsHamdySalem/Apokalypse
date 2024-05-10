@@ -7,7 +7,7 @@
             "width":1280,
             "height":720
         },
-        "fullscreen": false
+        "fullscreen": true
     },
     "scene": {
         "renderer":{
@@ -234,35 +234,35 @@
                             "linearVelocity": [0, 0, 0]
                           }
                         ]
+                    },
+                    {
+                        "rotation": [0, 0, 0],
+                        "position": [0, -0.5, 0],
+                        "scale": [1, 1, 900.0],
+                        "components": [
+                          {
+                            "type": "Mesh Renderer",
+                            "mesh": "laser",
+                            "material": "laser"
+                          },
+                          {
+                            "type": "collision",
+                            "mesh": "rocket"
+                          }
+                        ]
+                    },
+                    {
+                        "position": [1, -1, -1],
+                        "rotation": [45, 45, 0],
+                        "scale": [0.1, 0.1, 1.0],
+                        "components": [
+                            {
+                                "type": "Mesh Renderer",
+                                "mesh": "cube",
+                                "material": "metal"
+                            }
+                        ]
                     }
-                    // {
-                    //     "rotation": [0, 0, 0],
-                    //     "position": [0, -0.5, 0],
-                    //     "scale": [1, 1, 900.0],
-                    //     "components": [
-                    //       {
-                    //         "type": "Mesh Renderer",
-                    //         "mesh": "laser",
-                    //         "material": "laser"
-                    //       },
-                    //       {
-                    //         "type": "Collision",
-                    //         "mesh": "rocket"
-                    //       }
-                    //     ]
-                    // }
-                    // {
-                    //     "position": [1, -1, -1],
-                    //     "rotation": [45, 45, 0],
-                    //     "scale": [0.1, 0.1, 1.0],
-                    //     "components": [
-                    //         {
-                    //             "type": "Mesh Renderer",
-                    //             "mesh": "cube",
-                    //             "material": "metal"
-                    //         }
-                    //     ]
-                    // }
                 ]
             },
             {
