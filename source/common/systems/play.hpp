@@ -35,6 +35,7 @@ namespace our
         int healthPercentage;
         int timeFromLastPostprocess = 0;
         int postProcessIndex = 0;
+        int robotsYouKilled = 0;
         void enter(World *world, Application *app, our::ForwardRenderer *forwardRenderer)
         {
             postProcessTestCounter = 0;
@@ -42,6 +43,7 @@ namespace our
             this->forwardRenderer = forwardRenderer;
             this->app = app;
             robotsPassedYou = 0;
+            robotsYouKilled = 0;
 
             for (auto entity : world->getEntities())
             {
@@ -49,6 +51,16 @@ namespace our
                 if (name == "rocket")
                     player = entity;
                 
+            }
+
+            for (int i = 0; i < 100; i++)
+            {
+                int x = i%4;
+                
+                auto config = app->getConfig();
+                auto monkeyData = config["scene"]["runTimeEntities"][0];
+                monkeyData["position"] = {((1 + i / 2 + rand()%60) ^ 2) % 30, 0, -60 - i * 5};
+                world->addEntityAndDeserialize(monkeyData);
             }
         }
         
@@ -76,17 +88,9 @@ namespace our
             glm::vec3& position = entity->localTransform.position;
 
             if (app->getKeyboard().justPressed(GLFW_KEY_SPACE)){
-                world->addEntityAndDeserialize({{"name", "bullet"},
-                                            {"rotation", {270,0,0}},
-                                            {"position", {position[0]+0.2,position[1]+2,position[2]-5}},
-                                            {"scale", {10, 10, 10}},
-                                            {"components",
-                                            {
-                                            {{"type", "Mesh Renderer"}, {"mesh", "bullet"}, {"material", "bullet"}},
-                                            {{"type", "Movement"}, {"angularVelocity", {0, 0, 0}}, {"linearVelocity", {0, 0, -50}}},
-                                            {{"type", "collision"}, {"mesh", "bullet"}}
-                                            }}});
-
+                auto bulletData = app->getConfig()["scene"]["runTimeEntities"][1];
+                bulletData["position"] = {position[0]+0.2,position[1]+2,position[2]-5};
+                world->addEntityAndDeserialize(bulletData);
             }
 
             int monkeysRemaining = 0;
@@ -115,6 +119,7 @@ namespace our
                             if (collisionSystem.detectCollision(ent, bulletCenter,2.2f)) {
                                 hitEnemy(world, ent);
                                 bullet->deleteComponent<CollisionComponent>();
+                                robotsYouKilled++;
                                 break;
                             }
                         }
@@ -122,7 +127,7 @@ namespace our
                 }
             }
 
-            if(monkeysRemaining == 0 && healthPercentage > 0 && robotsPassedYou <= 5){
+            if(monkeysRemaining == 0 && healthPercentage > 0 && robotsPassedYou <= 5 && robotsYouKilled > 0){
                 app->changeState("win");
                 return;
             } else if(healthPercentage <= 0 || robotsPassedYou > 5) {
