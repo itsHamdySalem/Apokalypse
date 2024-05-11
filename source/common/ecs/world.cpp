@@ -1,5 +1,5 @@
 #include "world.hpp"
-
+#include <iostream>
 namespace our {
 
     // This will deserialize a json array of entities and add the new entities to the current world
@@ -15,21 +15,31 @@ namespace our {
             entity->parent = parent;
             entity->deserialize(entityData);
 
+            std::cout << entity->name << "\n";
+
             if (entity->name == "monkey")
             {
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 100; i++)
                 {
                     Entity *newEntity = add();
                     newEntity->parent = parent;
                     int x = i%4;
                     newEntity->deserialize({{"name", "monkey"},
-                                            {"rotation", {0, 0, 0}},
-                                            {"position", {((1 + i / 2) ^ 2) % 10, 0, -100 - i * 5}},
-                                            {"scale", {0.4, 0.4, 0.4}},
+                                            {"rotation", {0, 90, 0}},
+                                            {"position", {((1 + i / 2 + rand()%60) ^ 2) % 30, 0, -60 - i * 5}},
+                                            {"scale", {1.5, 1.5, 1.5}},
                                             {"components",
-                                            {{{"type", "Mesh Renderer"}, {"mesh", "monkey"}, {"material", "monkey"}},
-                                            {{"type", "Movement"}, {"angularVelocity", {0, 100, 0}}, {"linearVelocity", {0, 0, 0.6}}}}}});
+                                            {
+                                            {{"type", "Mesh Renderer"}, {"mesh", "monkey"}, {"material", "monkey"}},
+                                            {{"type", "Movement"}, {"angularVelocity", {0, 0, 0}}, {"linearVelocity", {0, 0, 1.6}}},
+                                            {{"type", "collision"}, {"mesh", "monkey"}}
+                                            }}});
                 }
+            }
+
+            if (entity->name == "bullet")
+            {
+                std::cout << "Add Bullet\n";
             }
             // data is map of maps
             // entityData is map

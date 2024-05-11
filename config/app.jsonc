@@ -7,7 +7,7 @@
             "width":1280,
             "height":720
         },
-        "fullscreen": true
+        "fullscreen": false
     },
     "scene": {
         "renderer":{
@@ -43,15 +43,17 @@
                 "emissive": "assets/textures/emissive.jpg",
                 "roughness": "assets/textures/roughness.jpg",
                 "albedo": "assets/textures/albedo.jpg",
-                "heart": "assets/textures/heart.png"
+                "heart": "assets/textures/heart.png",
+                "bullet": "assets/textures/bullet.png"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
-                "monkey": "assets/models/monkey.obj",
+                "monkey": "assets/models/player.obj",
                 "plane": "assets/models/plane.obj",
                 "sphere": "assets/models/sphere.obj",
                 "rocket": "assets/models/rocket.obj",
-                "laser": "assets/models/laser.obj"
+                "laser": "assets/models/laser.obj",
+                "bullet": "assets/models/bullet.obj"
             },
             "samplers":{
                 "default":{},
@@ -161,6 +163,21 @@
                     "emissive": "monkey",
                     "sampler": "default"
                 },
+                "laser": {
+                    "type": "textured",
+                    "shader": "textured",
+                    "pipelineState": {
+                      "faceCulling": {
+                        "enabled": false
+                      },
+                      "depthTesting": {
+                        "enabled": true
+                      }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "heart",
+                    "sampler": "default"
+                },
                 "rocket": {
                     "type": "textured",
                     "shader": "textured",
@@ -177,19 +194,19 @@
                         "texture": "rocket",
                         "sampler": "default"
                 },
-                "laser": {
+                "bullet":{
                     "type": "textured",
                     "shader": "textured",
                     "pipelineState": {
-                      "faceCulling": {
-                        "enabled": false
-                      },
-                      "depthTesting": {
-                        "enabled": true
-                      }
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
                     },
                     "tint": [1, 1, 1, 1],
-                    "texture": "heart",
+                    "texture": "bullet",
                     "sampler": "default"
                 }
             }
@@ -219,7 +236,25 @@
                     }
                 ],
                 "children": [
+                    // {
+                    //     "name": "laser",
+                    //     "rotation": [1, 0.5, 0],
+                    //     "position": [0, -3, -20],
+                    //     "scale": [0.15, 0.15, 10],
+                    //     "components": [
+                    //       {
+                    //         "type": "Mesh Renderer",
+                    //         "mesh": "cube",
+                    //         "material": "laser"
+                    //       },
+                    //       {
+                    //         "type": "collision",
+                    //         "mesh": "cube"
+                    //       }
+                    //     ]            
+                    // },
                     {
+                        "name":"rocket",
                         "rotation": [0, -90, 90],
                         "position": [0, -2, -3],
                         "scale": [0.005, 0.008, 0.005],
@@ -230,46 +265,30 @@
                             "material": "rocket"
                           },
                           {
-                            "type": "Movement",
-                            "linearVelocity": [0, 0, 0]
-                          }
-                        ]
-                    },
-                    {
-                        "rotation": [0, 0, 0],
-                        "position": [0, -0.5, 0],
-                        "scale": [1, 1, 900.0],
-                        "components": [
-                          {
-                            "type": "Mesh Renderer",
-                            "mesh": "laser",
-                            "material": "laser"
-                          },
-                          {
                             "type": "collision",
                             "mesh": "rocket"
-                          }
-                        ]
-                    },
-                    {
-                        "position": [1, -1, -1],
-                        "rotation": [45, 45, 0],
-                        "scale": [0.1, 0.1, 1.0],
-                        "components": [
-                            {
-                                "type": "Mesh Renderer",
-                                "mesh": "cube",
-                                "material": "metal"
-                            }
+                          }            
                         ]
                     }
+                    // {
+                    //     "position": [1, -1, -1],
+                    //     "rotation": [45, 45, 0],
+                    //     "scale": [0.1, 0.1, 1.0],
+                    //     "components": [
+                    //         {
+                    //             "type": "Mesh Renderer",
+                    //             "mesh": "cube",
+                    //             "material": "metal"
+                    //         }
+                    //     ]
+                    // }
                 ]
             },
             {
                 "name":"monkey",
-                // "position": [0, -0.3, -10],
-                "scale": [0.4, 0.4, 0.4],        
-                "rotation": [-45, 0, 0],
+                // "position": [0, 0, -10],
+                "scale": [0.7, 0.7, 0.7],        
+                "rotation": [0, 90, 0],
                 "components": [
                     {
                         "type": "Mesh Renderer",
@@ -278,8 +297,12 @@
                     },
                     {
                         "type": "Movement",
-                        "linearVelocity": [0, 0.1, 0],
-                        "angularVelocity": [0, 45, 0]
+                        "linearVelocity": [0, 0.1, 0]
+                        // "angularVelocity": [0, 45, 0]
+                    },
+                    {
+                        "type": "collision",
+                        "mesh": "monkey"
                     }
                 ]
             }
