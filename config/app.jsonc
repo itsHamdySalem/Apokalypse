@@ -39,8 +39,8 @@
                 "grass": "assets/textures/grass_ground_d.jpg",
                 "wood": "assets/textures/wood.jpg",
                 "glass": "assets/textures/glass-panels.png",
-                "monkey": "assets/textures/monkey.png",
-                "rocket": "assets/textures/rocket.jpg",
+                "monkey": "assets/textures/Robot_diffuse.jpg",
+                "rocket": "assets/textures/Spider_man_Body_BaseColor.png",
                 "white": "assets/textures/white.jpg",
                 "black": "assets/textures/black.jpg",
                 "specular": "assets/textures/specular.jpg",
@@ -49,14 +49,14 @@
                 "roughness": "assets/textures/roughness.jpg",
                 "albedo": "assets/textures/albedo.jpg",
                 "heart": "assets/textures/heart.png",
-                "bullet": "assets/textures/bullet.png"
+                "bullet": "assets/textures/white.png"
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
-                "monkey": "assets/models/player.obj",
+                "monkey": "assets/models/lowpoly.obj",
                 "plane": "assets/models/plane.obj",
                 "sphere": "assets/models/sphere.obj",
-                "rocket": "assets/models/rocket.obj",
+                "rocket": "assets/models/SpiderMan1.obj",
                 "laser": "assets/models/laser.obj",
                 "bullet": "assets/models/bullet.obj"
             },
@@ -172,12 +172,12 @@
                     "type": "textured",
                     "shader": "textured",
                     "pipelineState": {
-                      "faceCulling": {
-                        "enabled": false
-                      },
-                      "depthTesting": {
-                        "enabled": true
-                      }
+                        "faceCulling": {
+                            "enabled": false
+                        },
+                        "depthTesting": {
+                            "enabled": true
+                        }
                     },
                     "tint": [1, 1, 1, 1],
                     "texture": "heart",
@@ -193,11 +193,11 @@
                         "depthTesting": {
                             "enabled": true
 
-                          }
+                        }
                     },
-                        "tint": [1, 1, 1, 1],
-                        "texture": "rocket",
-                        "sampler": "default"
+                    "tint": [1, 1, 1, 1],
+                    "texture": "rocket",
+                    "sampler": "default"
                 },
                 "bullet":{
                     "type": "textured",
@@ -256,23 +256,23 @@
                     //         "type": "collision",
                     //         "mesh": "cube"
                     //       }
-                    //     ]            
+                    //     ]
                     // },
                     {
                         "name":"rocket",
-                        "rotation": [0, -90, 90],
-                        "position": [0, -2, -3],
-                        "scale": [0.005, 0.008, 0.005],
+                        "rotation": [180, 0, 180],
+                        "position": [0, -1.5, -3],
+                        "scale": [0.003, 0.003, 0.003],
                         "components": [
-                          {
-                            "type": "Mesh Renderer",
-                            "mesh": "rocket",
-                            "material": "rocket"
-                          },
-                          {
-                            "type": "collision",
-                            "mesh": "rocket"
-                          }            
+                            {
+                                "type": "Mesh Renderer",
+                                "mesh": "rocket",
+                                "material": "rocket"
+                            },
+                            {
+                                "type": "collision",
+                                "mesh": "rocket"
+                            }
                         ]
                     }
                     // {
@@ -292,7 +292,7 @@
             {
                 "name":"monkey",
                 // "position": [0, 0, -10],
-                "scale": [0.7, 0.7, 0.7],        
+                "scale": [0.3, 0.3, 0.3],
                 "rotation": [0, 90, 0],
                 "components": [
                     {
@@ -383,7 +383,7 @@
             //         }
             //     ]
             // }
-            ,{
+        ,{
                 "position": [0, 0, -30],
                 "rotation": [45, 45, 0],
                 "scale": [15, 15, 15],
@@ -404,52 +404,52 @@
         "runTimeEntities": [
             {
                 "name": "monkey",
-                "rotation": [0, 90, 0],
+                "rotation": [90, 90, 90],
                 "position": [
-                  0,
-                  0,
-                  0
+                    0,
+                    0,
+                    0
                 ],
-                "scale": [1.5, 1.5, 1.5],
+                "scale": [0.5, 0.5, 0.5],
                 "components": [
-                  {
-                    "type": "Mesh Renderer",
-                    "mesh": "monkey",
-                    "material": "monkey"
-                  },
-                  {
-                    "type": "Movement",
-                    "angularVelocity": [0, 0, 0],
-                    "linearVelocity": [0, 0, 1.6]
-                  },
-                  {
-                    "type": "collision",
-                    "mesh": "monkey"
-                  }
-                ]          
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "monkey",
+                        "material": "monkey"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 0, 0],
+                        "linearVelocity": [0, 0, 1.6]
+                    },
+                    {
+                        "type": "collision",
+                        "mesh": "monkey"
+                    }
+                ]
             },
             {
                 "name": "bullet",
                 "rotation": [270, 0, 0],
                 "position": [0, 0, 0],
-                "scale": [10, 10, 10],
+                "scale": [12, 12, 12],
                 "components": [
-                  {
-                    "type": "Mesh Renderer",
-                    "mesh": "bullet",
-                    "material": "bullet"
-                  },
-                  {
-                    "type": "Movement",
-                    "angularVelocity": [0, 0, 0],
-                    "linearVelocity": [0, 0, -50]
-                  },
-                  {
-                    "type": "collision",
-                    "mesh": "bullet"
-                  }
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "bullet",
+                        "material": "bullet"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 0, 0],
+                        "linearVelocity": [0, 0, -50]
+                    },
+                    {
+                        "type": "collision",
+                        "mesh": "bullet"
+                    }
                 ]
-            }              
-        ]      
+            }
+        ]
     }
 }
