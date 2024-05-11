@@ -51,6 +51,10 @@ namespace our
         glm::vec3 skyMiddle;
         glm::vec3 skyBottom;
 
+        // Post Process
+        std::vector<ShaderProgram *> postprocessShaders;
+        bool applyingPostProcess = false;
+
     public:
         // Initialize the renderer including the sky and the Postprocessing objects.
         // windowSize is the width & height of the window (in pixels).
@@ -77,6 +81,9 @@ namespace our
                 skyBottom = glm::vec3(data["skyBottom"][0], data["skyBottom"][1], data["skyBottom"][2]);
             }
         }
+
+        void changePostprocessShaderMode(int index);
+        void applyPostprocessShader();
     };
 
 }

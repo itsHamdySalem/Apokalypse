@@ -95,15 +95,17 @@ namespace our
             postprocessSampler->set(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             postprocessSampler->set(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-            // Create the post processing shader
-            ShaderProgram *postprocessShader = new ShaderProgram();
-            postprocessShader->attach("assets/shaders/fullscreen.vert", GL_VERTEX_SHADER);
-            postprocessShader->attach(config.value<std::string>("postprocess", ""), GL_FRAGMENT_SHADER);
-            postprocessShader->link();
-
+            for (const auto &shader : config["postprocess"])
+            {
+                ShaderProgram *postprocessShader = new ShaderProgram();
+                postprocessShader->attach("assets/shaders/fullscreen.vert", GL_VERTEX_SHADER);
+                postprocessShader->attach(shader.get<std::string>(), GL_FRAGMENT_SHADER);
+                postprocessShader->link();
+                postprocessShaders.push_back(postprocessShader);
+            }
             // Create a post processing material
             postprocessMaterial = new TexturedMaterial();
-            postprocessMaterial->shader = postprocessShader;
+            postprocessMaterial->shader = postprocessShaders[0];
             postprocessMaterial->texture = colorTarget;
             postprocessMaterial->sampler = postprocessSampler;
             // The default options are fine but we don't need to interact with the depth buffer
@@ -315,6 +317,14 @@ namespace our
                 lightMaterial->setup();
             }
         }
+    }
+
+    void ForwardRenderer::applyPostprocessShader(){
+        // applyingPostProcess = true;
+    }
+
+    void ForwardRenderer::changePostprocessShaderMode(int index){
+        postprocessMaterial->shader = postprocessShaders[index];
     }
 
 }

@@ -17,14 +17,6 @@
 #include <glm/trigonometric.hpp>
 #include <iostream>
 
-#define TIME_LEVEL_1 30
-#define TIME_LEVEL_2 60
-#define TIME_LEVEL_3 90
-#define TIME_LEVEL_4 120
-#define TIME_LEVEL_5 160
-// the duration of post processing in frames
-// after this duration, the post processing will return to the default
-#define postProcessingDuration 20
 
 namespace our
 {
@@ -41,6 +33,8 @@ namespace our
     public:
         int robotsPassedYou;
         int healthPercentage;
+        int timeFromLastPostprocess = 0;
+        int postProcessIndex = 0;
         void enter(World *world, Application *app, our::ForwardRenderer *forwardRenderer)
         {
             postProcessTestCounter = 0;
@@ -60,6 +54,17 @@ namespace our
         
         void update(World *world, float deltaTime)
         {
+
+
+            timeFromLastPostprocess++;
+            if(postProcessIndex == 3 && timeFromLastPostprocess > 50){
+                forwardRenderer->changePostprocessShaderMode(0);
+                postProcessIndex = 0;
+            } else if(postProcessIndex == 1 && timeFromLastPostprocess > 10) {
+                forwardRenderer->changePostprocessShaderMode(0);
+                postProcessIndex = 0;
+            }
+
 
             CameraComponent* camera = nullptr;
             for(auto entity : world->getEntities()){
@@ -92,8 +97,14 @@ namespace our
                     if (collisionSystem.detectCollision(ent, playerCenter,3)) {
                         hitEnemy(world, ent);
                         healthPercentage -= 20;
+                        postProcessIndex = 3;
+                        timeFromLastPostprocess = 0;
+                        forwardRenderer->changePostprocessShaderMode(postProcessIndex);
                     } else if(ent->localTransform.position[2] - playerCenter[2] > 2) {
                         robotsPassedYou++;
+                        postProcessIndex = 1;
+                        timeFromLastPostprocess = 0;
+                        forwardRenderer->changePostprocessShaderMode(postProcessIndex);
                         ent->deleteComponent<CollisionComponent>();
                         continue;
                     }
@@ -119,8 +130,7 @@ namespace our
                 return;
             }
         
-        }
-
+        } 
 
 
         void exit()
@@ -159,6 +169,11 @@ namespace our
                 
                 ImGui::End();
             }
+        }
+
+        void applyPostprocessing()
+        {
+            forwardRenderer->applyPostprocessShader();
         }
     };
 
