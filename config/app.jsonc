@@ -53,10 +53,10 @@
             },
             "meshes":{
                 "cube": "assets/models/cube.obj",
-                "monkey": "assets/models/lowpoly.obj",
+                "monkey": "assets/models/player.obj",
                 "plane": "assets/models/plane.obj",
                 "sphere": "assets/models/sphere.obj",
-                "rocket": "assets/models/SpiderMan1.obj",
+                "rocket": "assets/models/rocket.obj",
                 "laser": "assets/models/laser.obj",
                 "bullet": "assets/models/bullet.obj"
             },
@@ -260,9 +260,9 @@
                     // },
                     {
                         "name":"rocket",
-                        "rotation": [180, 0, 180],
-                        "position": [0, -1.5, -3],
-                        "scale": [0.003, 0.003, 0.003],
+                        "rotation": [0, -90, 90],
+                        "position": [0, -2, -3],
+                        "scale": [0.005, 0.008, 0.005],
                         "components": [
                             {
                                 "type": "Mesh Renderer",
@@ -292,7 +292,7 @@
             {
                 "name":"monkey",
                 // "position": [0, 0, -10],
-                "scale": [0.3, 0.3, 0.3],
+                "scale": [0.7, 0.7, 0.7],
                 "rotation": [0, 90, 0],
                 "components": [
                     {
@@ -384,7 +384,7 @@
             //     ]
             // }
         ,{
-                "position": [0, 0, -30],
+                "position": [0, -20, -50],
                 "rotation": [45, 45, 0],
                 "scale": [15, 15, 15],
                 "components": [
@@ -404,13 +404,13 @@
         "runTimeEntities": [
             {
                 "name": "monkey",
-                "rotation": [90, 90, 90],
+                "rotation": [0, 90, 0],
                 "position": [
                     0,
                     0,
                     0
                 ],
-                "scale": [0.5, 0.5, 0.5],
+                "scale": [1.5, 1.5, 1.5],
                 "components": [
                     {
                         "type": "Mesh Renderer",
@@ -432,7 +432,7 @@
                 "name": "bullet",
                 "rotation": [270, 0, 0],
                 "position": [0, 0, 0],
-                "scale": [12, 12, 12],
+                "scale": [10, 10, 10],
                 "components": [
                     {
                         "type": "Mesh Renderer",

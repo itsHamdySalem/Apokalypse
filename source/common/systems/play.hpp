@@ -42,7 +42,7 @@ namespace our
             healthPercentage = 100;
             this->forwardRenderer = forwardRenderer;
             this->app = app;
-            robotsPassedYou = 0;
+            robotsPassedYou = -1;
             robotsYouKilled = 0;
 
             for (auto entity : world->getEntities())
@@ -59,7 +59,7 @@ namespace our
                 
                 auto config = app->getConfig();
                 auto monkeyData = config["scene"]["runTimeEntities"][0];
-                monkeyData["position"] = {((1 + i / 2 + rand()%60) ^ 2) % 30, 0, -60 - i * 5};
+                monkeyData["position"] = {((1 + i / 2 + rand()%60) ^ 2) % 30, 0, -100 - i * 5};
                 world->addEntityAndDeserialize(monkeyData);
             }
         }
@@ -98,7 +98,7 @@ namespace our
                 glm::vec3& playerCenter = player->parent->localTransform.position;
                 if(ent->name == "monkey" && ent->getComponent<CollisionComponent>()){
                     monkeysRemaining++;
-                    if (collisionSystem.detectCollision(ent, playerCenter,3)) {
+                    if (collisionSystem.detectCollision(ent, playerCenter,2)) {
                         hitEnemy(world, ent);
                         healthPercentage -= 20;
                         postProcessIndex = 3;
@@ -116,7 +116,7 @@ namespace our
                     {
                         glm::vec3 bulletCenter = bullet->localTransform.position;
                         if (bullet->name == "bullet" && bullet->getComponent<CollisionComponent>()){
-                            if (collisionSystem.detectCollision(ent, bulletCenter,2.2f)) {
+                            if (collisionSystem.detectCollision(ent, bulletCenter,2.0f)) {
                                 hitEnemy(world, ent);
                                 bullet->deleteComponent<CollisionComponent>();
                                 robotsYouKilled++;
