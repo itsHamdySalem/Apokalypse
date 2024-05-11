@@ -37,6 +37,7 @@ namespace our
         // We define them here (instead of being local to the "render" function) as an optimization to prevent reallocating them every frame
         std::vector<RenderCommand> opaqueCommands;
         std::vector<RenderCommand> transparentCommands;
+        std::vector<RenderCommand> lightCommands;
         // Objects used for rendering a skybox
         Mesh *skySphere;
         TexturedMaterial *skyMaterial;
@@ -44,12 +45,6 @@ namespace our
         GLuint postprocessFrameBuffer, postProcessVertexArray;
         Texture2D *colorTarget, *depthTarget;
         TexturedMaterial *postprocessMaterial;
-        // Objects used for lighting
-        std::vector<LightComponent *> lightSources;
-        LitMaterial *lightMaterial;
-        glm::vec3 skyTop;
-        glm::vec3 skyMiddle;
-        glm::vec3 skyBottom;
 
         // Post Process
         std::vector<ShaderProgram *> postprocessShaders;
@@ -63,24 +58,6 @@ namespace our
         void destroy();
         // This function should be called every frame to draw the given world
         void render(World *world);
-        // This function reads material from json
-        void deserialize(const nlohmann::json &data)
-        {
-            if (data.contains("skyTop"))
-            {
-                skyTop = glm::vec3(data["skyTop"][0], data["skyTop"][1], data["skyTop"][2]);
-            }
-
-            if (data.contains("skyMiddle"))
-            {
-                skyMiddle = glm::vec3(data["skyMiddle"][0], data["skyMiddle"][1], data["skyMiddle"][2]);
-            }
-
-            if (data.contains("skyBottom"))
-            {
-                skyBottom = glm::vec3(data["skyBottom"][0], data["skyBottom"][1], data["skyBottom"][2]);
-            }
-        }
 
         void changePostprocessShaderMode(int index);
         void applyPostprocessShader();

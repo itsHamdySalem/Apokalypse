@@ -144,7 +144,7 @@ namespace our
         CameraComponent *camera = nullptr;
         opaqueCommands.clear();
         transparentCommands.clear();
-        lightSources.clear();
+        lightCommands.clear();
         for (auto entity : world->getEntities())
         {
             // If we hadn't found a camera yet, we look for a camera in this entity
@@ -164,16 +164,15 @@ namespace our
                 {
                     transparentCommands.push_back(command);
                 }
+                else if (command.material->affectedByLight)
+                {
+                    lightCommands.push_back(command);
+                }
                 else
                 {
                     // Otherwise, we add it to the opaque command list
                     opaqueCommands.push_back(command);
                 }
-            }
-            // Check if there is light components
-            if (auto lightComp = entity->getComponent<LightComponent>(); lightComp)
-            {
-                lightSources.push_back(lightComp);
             }
         }
 
@@ -228,35 +227,41 @@ namespace our
         {
             command.material->setup();
             glm::mat4 MVP = VP * command.localToWorld;
-            if (auto light_material = dynamic_cast<LitMaterial *>(command.material); light_material)
-            {
-                light_material->shader->set("VP", VP);
-                light_material->shader->set("M", command.localToWorld);
-                light_material->shader->set("eye", eye);
-                light_material->shader->set("M_IT", glm::transpose(glm::inverse(command.localToWorld)));
-                light_material->shader->set("light_count", (int)lightSources.size());
+            command.material->shader->set("transform", MVP);
+            command.mesh->draw();
+        }
 
-                for (int i = 0; i < (int)lightSources.size(); i++)
-                {
-                    if (lightSources[i]->lightType >= 0)
-                    {
-                        glm::vec3 position = lightSources[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(0, 0, 0, 1);
-                        glm::vec3 direction = lightSources[i]->getOwner()->getLocalToWorldMatrix() * glm::vec4(0, -1, 0, 0);
+        int light_count = world->light_count;
+        Light *lights = world->lights;
 
-                        light_material->shader->set("lights[" + std::to_string(i) + "].direction", direction);
-                        light_material->shader->set("lights[" + std::to_string(i) + "].color", lightSources[i]->color);
-                        light_material->shader->set("lights[" + std::to_string(i) + "].type", lightSources[i]->lightType);
-                        light_material->shader->set("lights[" + std::to_string(i) + "].position", position);
-                        light_material->shader->set("lights[" + std::to_string(i) + "].diffuse", lightSources[i]->diffuse);
-                        light_material->shader->set("lights[" + std::to_string(i) + "].specular", lightSources[i]->specular);
-                        light_material->shader->set("lights[" + std::to_string(i) + "].attenuation", lightSources[i]->attenuation);
-                        light_material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lightSources[i]->cone_angles);
-                    }
-                }
-            }
-            else
+        for (auto &command : lightCommands)
+        {
+            command.material->setup();
+
+            glm::mat4 M = command.localToWorld;
+            glm::mat4 M_IT = glm::transpose(glm::inverse(M));
+            glm::vec3 eye = camera->getOwner()->localTransform.position;
+            glm::vec3 sky_top = glm::vec3(0.5f, 0.5f, 0.5f);
+            glm::vec3 sky_horizon = glm::vec3(0.5f, 0.5f, 0.5f);
+            glm::vec3 sky_bottom = glm::vec3(0.5f, 0.0f, 0.0f);
+
+            command.material->shader->set("M", M);
+            command.material->shader->set("VP", VP);
+            command.material->shader->set("M_IT", M_IT);
+            command.material->shader->set("eye", eye);
+            command.material->shader->set("sky.top", sky_top);
+            command.material->shader->set("sky.horizon", sky_horizon);
+            command.material->shader->set("sky.bottom", sky_bottom);
+            command.material->shader->set("light_count", light_count);
+
+            for (int i = 0; i < light_count; ++i)
             {
-                command.material->shader->set("transform", MVP);
+                command.material->shader->set("lights[" + std::to_string(i) + "].type", lights[i].kind);
+                command.material->shader->set("lights[" + std::to_string(i) + "].position", lights[i].position);
+                command.material->shader->set("lights[" + std::to_string(i) + "].color", lights[i].color);
+                command.material->shader->set("lights[" + std::to_string(i) + "].attenuation", lights[i].attenuation);
+                command.material->shader->set("lights[" + std::to_string(i) + "].direction", lights[i].direction);
+                command.material->shader->set("lights[" + std::to_string(i) + "].cone_angles", lights[i].cone_angles);
             }
 
             command.mesh->draw();
@@ -310,20 +315,16 @@ namespace our
             postprocessMaterial->setup();
             glBindVertexArray(postProcessVertexArray);
             glDrawArrays(GL_TRIANGLES, 0, 3);
-
-            // check if there's a light material; then apply it
-            if (lightMaterial)
-            {
-                lightMaterial->setup();
-            }
         }
     }
 
-    void ForwardRenderer::applyPostprocessShader(){
+    void ForwardRenderer::applyPostprocessShader()
+    {
         // applyingPostProcess = true;
     }
 
-    void ForwardRenderer::changePostprocessShaderMode(int index){
+    void ForwardRenderer::changePostprocessShaderMode(int index)
+    {
         postprocessMaterial->shader = postprocessShaders[index];
     }
 

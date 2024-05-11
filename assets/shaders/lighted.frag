@@ -1,6 +1,6 @@
 #version 330
 
-#define MAX_LIGHTS 8
+#define MAX_LIGHTS 16
 
 // Light types
 #define DIRECTIONAL 0
