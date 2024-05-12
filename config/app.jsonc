@@ -39,7 +39,7 @@
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
         "monkey": "assets/textures/Robot_diffuse.jpg",
-        "rocket": "assets/textures/Spider_man_Body_BaseColor.png",
+        "rocket": "assets/textures/3enab.png",
         "white": "assets/textures/white.jpg",
         "black": "assets/textures/black.jpg",
         "specular": "assets/textures/specular.jpg",
@@ -55,7 +55,7 @@
         "monkey": "assets/models/player.obj",
         "plane": "assets/models/plane.obj",
         "sphere": "assets/models/sphere.obj",
-        "rocket": "assets/models/rocket.obj",
+        "rocket": "assets/models/SpiderMan1.obj",
         "laser": "assets/models/laser.obj",
         "bullet": "assets/models/bullet.obj"
       },
@@ -258,8 +258,8 @@
           // },
           {
             "name": "rocket",
-            "rotation": [0, -90, 90],
-            "position": [0, -2, -3],
+            "rotation": [90, -90, 90],
+            "position": [0, -2, -1],
             "scale": [0.005, 0.008, 0.005],
             "components": [
               {

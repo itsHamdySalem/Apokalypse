@@ -165,11 +165,10 @@ namespace our
                                 
                 ImGui::Text("Health: ");
                 ImGui::SameLine();
-                ImGui::ProgressBar(1.0 * healthPercentage / 100.0f, ImVec2(0.0f, 0.0f), std::to_string(healthPercentage).c_str());
+                ImGui::ProgressBar(1.0 * healthPercentage / 100.0f, ImVec2(130.0f, 20.0f), std::to_string((int) healthPercentage).c_str());
 
                 std::string score_and_level =
-                    "Robots Escaped: " + std::to_string((int)robotsPassedYou) +
-                    "\nLevel: " + std::to_string(0);
+                    "Robots Escaped: " + std::to_string((int)robotsPassedYou);
                 ImGui::TextUnformatted(score_and_level.c_str());
                 
                 ImGui::End();

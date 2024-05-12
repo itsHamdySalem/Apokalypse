@@ -44,7 +44,7 @@ public:
         // Display the main message in bold and larger font
         ImGui::PushFont(ImGui::GetIO().Fonts->Fonts[0]); // Assuming the first font is bold
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 20)); // Add some spacing
-        ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), "You Fucked Up the world");
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), "You failed ya 3enab, World is fucked up :(");
         ImGui::PopStyleVar(); // Restore spacing
         ImGui::PopFont(); // Restore font
         
