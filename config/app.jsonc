@@ -10,8 +10,13 @@
   },
   "scene": {
     "renderer": {
-      "sky": "assets/textures/sky.jpg",
-      "postprocess": "assets/shaders/postprocess/vignette.frag"
+      "sky": "assets/textures/world.jpg",
+      "postprocess": [
+        "assets/shaders/postprocess/vignette.frag",
+        "assets/shaders/postprocess/grayscale.frag",
+        "assets/shaders/postprocess/chromatic-aberration.frag",
+        "assets/shaders/postprocess/radial-blur.frag"
+      ]
     },
     "assets": {
       "shaders": {
@@ -29,12 +34,12 @@
         }
       },
       "textures": {
-        "moon": "assets/textures/moon.jpg",
+        "moon": "assets/textures/earth.jpeg",
         "grass": "assets/textures/grass_ground_d.jpg",
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
-        "monkey": "assets/textures/monkey.png",
-        "rocket": "assets/textures/rocket.jpg",
+        "monkey": "assets/textures/Robot_diffuse.jpg",
+        "rocket": "assets/textures/3enab.png",
         "white": "assets/textures/white.jpg",
         "black": "assets/textures/black.jpg",
         "specular": "assets/textures/specular.jpg",
@@ -42,15 +47,17 @@
         "emissive": "assets/textures/emissive.jpg",
         "roughness": "assets/textures/roughness.jpg",
         "albedo": "assets/textures/albedo.jpg",
-        "heart": "assets/textures/heart.png"
+        "heart": "assets/textures/heart.png",
+        "bullet": "assets/textures/white.png"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
-        "monkey": "assets/models/monkey.obj",
+        "monkey": "assets/models/player.obj",
         "plane": "assets/models/plane.obj",
         "sphere": "assets/models/sphere.obj",
-        "rocket": "assets/models/rocket.obj",
-        "laser": "assets/models/laser.obj"
+        "rocket": "assets/models/SpiderMan1.obj",
+        "laser": "assets/models/laser.obj",
+        "bullet": "assets/models/bullet.obj"
       },
       "samplers": {
         "default": {},
@@ -110,8 +117,8 @@
           "sampler": "default"
         },
         "monkey": {
-          "type": "light",
-          "shader": "lighted",
+          "type": "tinted",
+          "shader": "tinted",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -121,7 +128,6 @@
             }
           },
           "tint": [1, 1, 1, 1],
-          "texture": "monkey",
           "sampler": "default"
         },
         "moon": {
@@ -139,9 +145,9 @@
           "texture": "moon",
           "sampler": "default"
         },
-        "rocket": {
-          "type": "textured",
-          "shader": "textured",
+        "light": {
+          "type": "lighted",
+          "shader": "lighted",
           "pipelineState": {
             "faceCulling": {
               "enabled": false
@@ -150,8 +156,11 @@
               "enabled": true
             }
           },
-          "tint": [1, 1, 1, 1],
-          "texture": "rocket",
+          "albedo": "moon",
+          "specular": "grass",
+          "roughness": "wood",
+          "ambient_occlusion": "glass",
+          "emissive": "monkey",
           "sampler": "default"
         },
         "laser": {
@@ -168,6 +177,36 @@
           "tint": [1, 1, 1, 1],
           "texture": "heart",
           "sampler": "default"
+        },
+        "rocket": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "rocket",
+          "sampler": "default"
+        },
+        "bullet": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": {
+              "enabled": false
+            },
+            "depthTesting": {
+              "enabled": true
+            }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "bullet",
+          "sampler": "default"
         }
       }
     },
@@ -180,12 +219,26 @@
           },
           {
             "type": "Free Camera Controller"
+          },
+          {
+            "type": "light",
+            "typeOfLight": "DIRECTIONAL",
+            "diffuse": [0, 1, 0],
+            "specular": [0, 1, 0]
+          },
+          {
+            "type": "light",
+            "typeOfLight": "POINT",
+            "diffuse": [0, 0, 1],
+            "specular": [0, 0, 1],
+            "attenuation": [0.001, 0.001, 0.0001]
           }
         ],
         "children": [
           {
-            "rotation": [0, -90, 90],
-            "position": [0, -2, -3],
+            "name": "rocket",
+            "rotation": [90, -90, 90],
+            "position": [0, -2, -1],
             "scale": [0.005, 0.008, 0.005],
             "components": [
               {
@@ -194,36 +247,8 @@
                 "material": "rocket"
               },
               {
-                "type": "Movement",
-                "linearVelocity": [0, 0, 0]
-              }
-            ]
-          },
-          {
-            "rotation": [0, 0, 0],
-            "position": [0, -0.5, 0],
-            "scale": [1, 1, 900.0],
-            "components": [
-              {
-                "type": "Mesh Renderer",
-                "mesh": "laser",
-                "material": "laser"
-              },
-              {
                 "type": "collision",
                 "mesh": "rocket"
-              }
-            ]
-          },
-          {
-            "position": [1, -1, -1],
-            "rotation": [45, 45, 0],
-            "scale": [0.1, 0.1, 1.0],
-            "components": [
-              {
-                "type": "Mesh Renderer",
-                "mesh": "cube",
-                "material": "metal"
               }
             ]
           }
@@ -231,9 +256,8 @@
       },
       {
         "name": "monkey",
-        // "position": [0, -0.3, -10],
-        "scale": [0.4, 0.4, 0.4],
-        "rotation": [-45, 0, 0],
+        "scale": [0.7, 0.7, 0.7],
+        "rotation": [0, 90, 0],
         "components": [
           {
             "type": "Mesh Renderer",
@@ -242,85 +266,16 @@
           },
           {
             "type": "Movement",
-            "linearVelocity": [0, 0.1, 0],
-            "angularVelocity": [0, 45, 0]
+            "linearVelocity": [0, 0.1, 0]
+          },
+          {
+            "type": "collision",
+            "mesh": "monkey"
           }
         ]
       },
-      // {
-      //     "position": [0, -1, 0],
-      //     "rotation": [-90, 0, 0],
-      //     "scale": [10, 10, 1],
-      //     "components": [
-      //         {
-      //             "type": "Mesh Renderer",
-      //             "mesh": "plane",
-      //             "material": "grass"
-      //         }
-      //     ]
-      // },
-      // {
-      //     "position": [0, 1, 2],
-      //     "rotation": [0, 0, 0],
-      //     "scale": [2, 2, 2],
-      //     "components": [
-      //         {
-      //             "type": "Mesh Renderer",
-      //             "mesh": "plane",
-      //             "material": "glass"
-      //         }
-      //     ]
-      // }
-      // {
-      //     "position": [0, 1, -2],
-      //     "rotation": [0, 0, 0],
-      //     "scale": [2, 2, 2],
-      //     "components": [
-      //         {
-      //             "type": "Mesh Renderer",
-      //             "mesh": "plane",
-      //             "material": "glass"
-      //         }
-      //     ]
-      // },
-      // {
-      //     "position": [2, 1, 0],
-      //     "rotation": [0, 90, 0],
-      //     "scale": [2, 2, 2],
-      //     "components": [
-      //         {
-      //             "type": "Mesh Renderer",
-      //             "mesh": "plane",
-      //             "material": "glass"
-      //         }
-      //     ]
-      // },
-      // {
-      //     "position": [-2, 1, 0],
-      //     "rotation": [0, 90, 0],
-      //     "scale": [2, 2, 2],
-      //     "components": [
-      //         {
-      //             "type": "Mesh Renderer",
-      //             "mesh": "plane",
-      //             "material": "glass"
-      //         }
-      //     ]
-      // },
-      // {
-      //     "position": [0, 3, 0],
-      //     "rotation": [90, 0, 0],
-      //     "scale": [2, 2, 2],
-      //     "components": [
-      //         {
-      //             "type": "Mesh Renderer",
-      //             "mesh": "plane",
-      //             "material": "glass"
-      //         }
-      //     ]
-      // }
       {
-        "position": [0, 0, -30],
+        "position": [0, -20, -50],
         "rotation": [45, 45, 0],
         "scale": [15, 15, 15],
         "components": [
@@ -332,20 +287,52 @@
           {
             "type": "Movement",
             "angularVelocity": [0, 90, 0]
-            // "linearVelocity": [0, 0.1, 0.4]
           }
-        ],
-        "children": [
+        ]
+      }
+    ],
+    "runTimeEntities": [
+      {
+        "name": "monkey",
+        "rotation": [0, 90, 0],
+        "position": [0, 0, 0],
+        "scale": [1.5, 1.5, 1.5],
+        "components": [
           {
-            "position": [0, 0, 0],
-            "components": [
-              {
-                "type": "light",
-                "kind": 1, //point
-                "color": [1, 1, 1], //white
-                "attenuation": [0.05, 0, 0]
-              }
-            ]
+            "type": "Mesh Renderer",
+            "mesh": "monkey",
+            "material": "monkey"
+          },
+          {
+            "type": "Movement",
+            "angularVelocity": [0, 0, 0],
+            "linearVelocity": [0, 0, 1.6]
+          },
+          {
+            "type": "collision",
+            "mesh": "monkey"
+          }
+        ]
+      },
+      {
+        "name": "bullet",
+        "rotation": [270, 0, 0],
+        "position": [0, 0, 0],
+        "scale": [10, 10, 10],
+        "components": [
+          {
+            "type": "Mesh Renderer",
+            "mesh": "bullet",
+            "material": "bullet"
+          },
+          {
+            "type": "Movement",
+            "angularVelocity": [0, 0, 0],
+            "linearVelocity": [0, 0, -50]
+          },
+          {
+            "type": "collision",
+            "mesh": "bullet"
           }
         ]
       }

@@ -10,7 +10,7 @@ namespace our
         {
             return;
         }
-
+        
         kind = data.value("kind", 0);
         color = data.value("color", glm::vec3(1.0f, 0.0f, 0.0f));
         attenuation = data.value("attenuation", glm::vec3(1.0f, 0.0f, 0.0f));
