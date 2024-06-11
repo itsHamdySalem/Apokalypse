@@ -25,6 +25,7 @@ namespace our
     public:
         Light lights[16];
         int light_count = 0;
+
         World() = default;
 
         // This will deserialize a json array of entities and add the new entities to the current world

@@ -1,12 +1,9 @@
 #include "light.hpp"
 #include "../ecs/entity.hpp"
 #include "../deserialize-utils.hpp"
-#include <glm/gtx/euler_angles.hpp>
-#include <iostream>
 
 namespace our
 {
-
     void LightComponent::deserialize(const nlohmann::json &data)
     {
         if (!data.is_object())
